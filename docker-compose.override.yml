@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  postgres:
+    networks:
+      - vapour
+
+  api:
+    networks:
+      - vapour
+
+  importer:
+    networks:
+      - vapour
+
+  t-rex:
+    networks:
+      - vapour
+
+  web:
+    networks:
+      - traefik
+      - vapour
+    labels:
+      - "traefik.frontend.passHostHeader=false"
+      - "traefik.frontend.rule=Host:poc-osm.navitia.io;PathPrefixStrip:/VapourTrail,/vapourtrail"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik"
+
+networks:
+    traefik:
+        external:
+          name: traefik
+    vapour:
+        external:
+          name: vapour

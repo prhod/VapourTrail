@@ -7,8 +7,11 @@ var bench_img = "<img src='img/bench.svg' heigth='20px' width='20px' />"
 var shelter_bench_img = "<img src='img/shelter_bench.svg' heigth='20px' width='20px' />"
 var departures_img = "<img src='img/departures.svg' heigth='20px' width='20px' />"
 
-const vapour_trail_api_base_url = "/api";
-const vapour_trail_tileserver_url = `${window.location.origin}/tiles/`;
+const vapour_trail_base_url = window.location.origin + window.location.pathname.replace('/vapour_trail.html', '');
+// const vapour_trail_base_url = window.location.origin;
+const vapour_trail_api_base_url = `${vapour_trail_base_url}/api`;
+const vapour_trail_tileserver_url = `${vapour_trail_base_url}/tiles`;
+const vapour_trail_tileserver_web = `${vapour_trail_base_url}/`;
 
 var map = new mapboxgl.Map({
     container: 'map',
@@ -21,12 +24,12 @@ var map = new mapboxgl.Map({
     transformRequest: (url, resourceType)=> {
     if(url.startsWith('http://t-rex:6767')) {
       return {
-       url: url.replace('http://t-rex:6767/',  vapour_trail_tileserver_url)
+        url: url.replace('http://t-rex:6767',  vapour_trail_tileserver_url)
      }
     } else if (url.startsWith('http://web:8082')) {
         console.log(url.replace('http://web:8082',  window.location.origin));
         return {
-          url: url.replace('http://web:8082',  window.location.origin)
+            url: url.replace('http://web:8082',  vapour_trail_tileserver_web)
         }
     }
   }
